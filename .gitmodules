@@ -1,0 +1,9 @@
+[submodule "uia_master_husky"]
+	path = uia_master_husky
+	url = https://github.com/orjano-max/uia_master_husky
+[submodule "um7"]
+	path = um7
+	url = https://github.com/mikeferguson/um7
+[submodule "serial"]
+	path = serial
+	url = https://github.com/mikeferguson/serial
