@@ -30,7 +30,7 @@ def generate_launch_description():
     prefix = LaunchConfiguration('prefix')
 
     config_husky_velocity_controller = PathJoinSubstitution(
-        [FindPackageShare("husky_control"), "config", "control.yaml"]
+        [FindPackageShare("husky_group"), "params", "sim_control.yaml"]
     )
 
     # Get URDF via xacro
