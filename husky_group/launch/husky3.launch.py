@@ -12,7 +12,7 @@ def generate_launch_description():
     localization_params = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
-        'localization.yaml'],
+        'husky_localization.yaml'],
     )
 
     urdf_extras_path = PathJoinSubstitution(
