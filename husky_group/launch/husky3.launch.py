@@ -6,6 +6,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.actions import GroupAction
+from launch_ros.actions import PushRosNamespace
+
 #test Fra lars
 def generate_launch_description():
 
@@ -26,14 +29,19 @@ def generate_launch_description():
     )
     
     # Launch the husky robot using the husky_uia uia_master_husky repo
-    launch_husky_base = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(PathJoinSubstitution(
-        [FindPackageShare("husky_base"), 'launch', 'base_launch.py'])),
-        launch_arguments ={
-            "urdf_extras" : urdf_extras_path,
-            "localization_params" : localization_params,
-            "config_husky_velocity_controller" : config_husky_velocity_controller,
-        }.items()
+    launch_husky_base = GroupAction(
+        actions=[
+            PushRosNamespace('husky'),  
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(PathJoinSubstitution(
+                [FindPackageShare("husky_base"), 'launch', 'base_launch.py'])),
+                launch_arguments ={
+                    "urdf_extras" : urdf_extras_path,
+                    "localization_params" : localization_params,
+                    "config_husky_velocity_controller" : config_husky_velocity_controller,
+                }.items()
+            ),
+        ]
     )
 
 
