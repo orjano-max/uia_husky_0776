@@ -9,7 +9,11 @@ from launch_ros.substitutions import FindPackageShare
 #test Fra lars
 def generate_launch_description():
 
-
+    localization_params = PathJoinSubstitution(
+        [FindPackageShare('husky_group'),
+        'params',
+        'localization.yaml'],
+    )
 
     urdf_extras_path = PathJoinSubstitution(
                 [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
