@@ -6,6 +6,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.actions import GroupAction
+from launch_ros.actions import PushRosNamespace
 #test Fra lars
 def generate_launch_description():
 
@@ -63,26 +65,32 @@ def generate_launch_description():
 
 
     #Launch the pointcloud to laserscan package
-    node_pointcloud_to_laserscan =  Node(
-    	name="pointcloud_to_laserscan",
-        package="pointcloud_to_laserscan",
-        remappings=[('cloud_in', '/points')],
-        executable="pointcloud_to_laserscan_node",
-        parameters=[{
-        'target_frame': 'base_laser',
-        'transform_tolerance': 0.01,
-        'min_height': -0.50,
-        'max_height': 0.2,
-        'angle_min': -math.pi,  # -M_PI/2
-        'angle_max': math.pi,  # M_PI/2
-        'angle_increment': 0.0087,  # M_PI/360.0
-        'scan_time': 0.3333,
-        'range_min': 0.8,
-        'range_max': 120.0,
-        'use_inf': True,
-        'inf_epsilon': 1.0,
-        }]
+    node_pointcloud_to_laserscan = GroupAction(
+        actions=[
+            PushRosNamespace('husky'), 
+            Node(
+                name="pointcloud_to_laserscan",
+                package="pointcloud_to_laserscan",
+                remappings=[('cloud_in', '/points')],
+                executable="pointcloud_to_laserscan_node",
+                parameters=[{
+                    'target_frame': 'base_laser',
+                    'transform_tolerance': 0.01,
+                    'min_height': -0.50,
+                    'max_height': 0.2,
+                    'angle_min': -math.pi,  # -M_PI/2
+                    'angle_max': math.pi,  # M_PI/2
+                    'angle_increment': 0.0087,  # M_PI/360.0
+                    'scan_time': 0.3333,
+                    'range_min': 0.8,
+                    'range_max': 120.0,
+                    'use_inf': True,
+                    'inf_epsilon': 1.0,
+                }]
+            ),
+        ]
     )
+    
 
 
     ld = LaunchDescription()
