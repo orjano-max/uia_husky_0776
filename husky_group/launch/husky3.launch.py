@@ -36,9 +36,9 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource(PathJoinSubstitution(
                 [FindPackageShare("husky_base"), 'launch', 'base_launch.py'])),
                 launch_arguments ={
-                    "urdf_extras" : urdf_extras_path,
-                    "localization_params" : localization_params,
-                    "config_husky_velocity_controller" : config_husky_velocity_controller,
+                    #"urdf_extras" : urdf_extras_path,
+                    #"localization_params" : localization_params,
+                    #"config_husky_velocity_controller" : config_husky_velocity_controller,
                 }.items()
             ),
         ]
