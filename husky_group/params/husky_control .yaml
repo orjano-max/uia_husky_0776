@@ -3,13 +3,12 @@ controller_manager:
   ros__parameters:
     update_rate: 10  # Hz
 
-    husky:
-      joint_state_broadcaster:
-        type: joint_state_broadcaster/JointStateBroadcaster
 
-    husky:
-      husky_velocity_controller:
-        type: diff_drive_controller/DiffDriveController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    husky_velocity_controller:
+      type: diff_drive_controller/DiffDriveController
 
 husky:
   husky_velocity_controller:
