@@ -38,7 +38,7 @@ def generate_launch_description():
                 launch_arguments ={
                     #"urdf_extras" : urdf_extras_path,
                     #"localization_params" : localization_params,
-                    #"config_husky_velocity_controller" : config_husky_velocity_controller,
+                    'config_husky_velocity_controller' : './src/uia_husky_0776/husky_group/params/husky_control .yaml',
                 }.items()
             ),
         ]
