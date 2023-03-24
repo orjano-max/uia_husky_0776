@@ -12,20 +12,39 @@ from launch_ros.actions import PushRosNamespace
 #test Fra lars
 def generate_launch_description():
 
-    localization_params = PathJoinSubstitution(
+    
+    urdf_extras_path = PathJoinSubstitution([
+        FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"        
+    ])
+
+    config_control = PathJoinSubstitution(
+        [FindPackageShare("husky_group"),
+        "params",
+        "control.yaml"],
+    )
+    
+    config_localization = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
         'husky_localization.yaml'],
     )
 
-    urdf_extras_path = PathJoinSubstitution([
-        FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"        
-    ])
-
-    config_husky_velocity_controller = PathJoinSubstitution(
+    config_teleop_interactive_markers = PathJoinSubstitution(
         [FindPackageShare("husky_group"),
         "params",
-        "husky_control.yaml"],
+        "teleop_interactive_markers.yaml"],
+    )
+
+    config_teleop_logitech = PathJoinSubstitution(
+        [FindPackageShare("husky_group"),
+        "params",
+        "teleop_logitech.yaml"],
+    )
+
+    config_twist_mux = PathJoinSubstitution(
+        [FindPackageShare("husky_group"),
+        "params",
+        "twist_mux.yaml"],
     )
     
     # Launch the husky robot using the husky_uia uia_master_husky repo
@@ -36,15 +55,16 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource(PathJoinSubstitution(
                 [FindPackageShare("husky_base"), 'launch', 'base_launch.py'])),
                 launch_arguments ={
-                    #"urdf_extras" : urdf_extras_path,
-                    #"localization_params" : localization_params,
-                    'config_husky_velocity_controller' : './src/uia_husky_0776/husky_group/params/husky_control.yaml',
+                    "urdf_extras" : urdf_extras_path,
+                    "control_params" : config_control,
+                    "localization_params" : config_localization,
+                    "teleop_interactive_markers_paramas" : config_teleop_interactive_markers,
+                    "teleop_logitech_params" : config_teleop_logitech,
+                    "twist_mux_params" : config_twist_mux,
                 }.items()
             ),
         ]
     )
-
-
 
 
     ld = LaunchDescription()
