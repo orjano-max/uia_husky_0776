@@ -26,7 +26,7 @@ def generate_launch_description():
     config_localization = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
-        'husky_localization.yaml'],
+        'localization.yaml'],
     )
 
     config_teleop_interactive_markers = PathJoinSubstitution(
