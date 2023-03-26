@@ -93,7 +93,7 @@ def generate_launch_description():
     )
 
 
-    ld = LaunchDescription()
+    ld = LaunchDescription(ARGUMENTS)
 
     # Launch pointcloud to laserscan, imu and lidar
     ld.add_action(node_pointcloud_to_laserscan)
