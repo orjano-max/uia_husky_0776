@@ -1,13 +1,20 @@
 from symbol import parameters
 import math
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+ARGUMENTS = [
+    DeclareLaunchArgument('serial_port', default_value="/dev/ttyUSB1",
+                          description='Serial port to connect to the husky.'),
+]
+
 def generate_launch_description():
+
+    serial_port = LaunchConfiguration("serial_port")
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -40,6 +47,7 @@ def generate_launch_description():
             "urdf_extras" : urdf_extras_path,
             "localization_params" : localization_params,
             "config_husky_velocity_controller" : config_husky_velocity_controller,
+            "serial_port" : serial_port,
         }.items()
     )
 
