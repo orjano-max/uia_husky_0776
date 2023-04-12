@@ -59,12 +59,13 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    """ node_robot_state_publisher = Node(
+    node_robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
         parameters=[robot_description],
-    )
+    ) 
+    """
 
     node_controller_manager = Node(
         package="controller_manager",
@@ -180,8 +181,9 @@ def generate_launch_description():
     ld.add_action(node_um7_imu)
     ld.add_action(launch_ouster_lidar)
     
-    """ # Launch Husky UGV
-    ld.add_action(node_robot_state_publisher)
+    # Launch Husky UGV
+    ld.add_action(node_robot_state_publisher) 
+    """
     ld.add_action(node_controller_manager)
     ld.add_action(spawn_controller)
     ld.add_action(spawn_husky_velocity_controller)
