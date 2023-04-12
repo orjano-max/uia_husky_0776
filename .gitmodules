@@ -4,3 +4,6 @@
 [submodule "serial"]
 	path = serial
 	url = https://github.com/mikeferguson/serial
+[submodule "uia_master_husky"]
+	path = uia_master_husky
+	url = https://github.com/orjano-max/uia_master_husky
