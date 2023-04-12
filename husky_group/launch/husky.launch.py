@@ -12,12 +12,9 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
-    urdf_extras_path = FindPackageShare("husky_group")
- 
+    urdf_extras_path = "$(find husky_group)/urdf/husky_urdf_extras.urdf"
 
-    print("URDF PATH: ",urdf_extras_path)
-
-    #os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+    os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
     os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
