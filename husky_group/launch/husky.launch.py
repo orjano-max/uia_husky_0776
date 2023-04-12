@@ -12,7 +12,11 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
-    urdf_extras_path = "$(find husky_group)/urdf/husky_urdf_extras.urdf"
+    urdf_extras_path = PathJoinSubstitution(
+        [FindPackageShare('husky_group'),
+        'urdf',
+        'husky_urdf_extras.urdf'],
+    )
 
     #os.environ["CPR_URDF_EXTRAS"] = urdf_extras_path
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
@@ -53,7 +57,7 @@ def generate_launch_description():
             " ",
             "prefix:=''",
             " ",
-            "urdf_extras:='$(find husky_group)/urdf/husky_urdf_extras.urdf'", 
+            "urdf_extras:=$(find husky_group)/urdf/husky_urdf_extras.urdf", 
         ]
     )
     robot_description = {"robot_description": robot_description_content}
