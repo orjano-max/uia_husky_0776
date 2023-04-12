@@ -19,12 +19,12 @@ os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 def generate_launch_description():
 
 
-    # Get LIDAR parameters
+    """ # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
         'ouster_lidar.yaml'],
-    )
+    ) """
 
     """ config_husky_ekf = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
@@ -137,14 +137,14 @@ def generate_launch_description():
     )
 
 
-    #Launch the LIDAR
+    """ #Launch the LIDAR
     launch_ouster_lidar = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
         [FindPackageShare("ros2_ouster"), 'launch', 'os1_launch.py'])),
         launch_arguments ={
             "params_file" : lidar_params
         }.items()
-    )
+    ) """
 
 
     #Launch the pointcloud to laserscan package
@@ -175,7 +175,7 @@ def generate_launch_description():
     # Launch pointcloud to laserscan, imu and lidar
     ld.add_action(node_pointcloud_to_laserscan)
     ld.add_action(node_um7_imu)
-    ld.add_action(launch_ouster_lidar)
+    #ld.add_action(launch_ouster_lidar)
     
     """ # Launch Husky UGV
     ld.add_action(node_robot_state_publisher)
