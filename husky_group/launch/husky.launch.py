@@ -12,9 +12,8 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
-    urdf_extras_path = PathJoinSubstitution(
-            [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-    )
+    urdf_extras_path = FindPackageShare("husky_group")
+ 
 
     print("URDF PATH: ",urdf_extras_path.__getattribute__)
 
