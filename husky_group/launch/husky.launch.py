@@ -18,9 +18,9 @@ os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 
 def generate_launch_description():
 
-    urdf_extras_path = PathJoinSubstitution(
+    """ urdf_extras_path = PathJoinSubstitution(
         [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"] 
-    )   
+    ) """   
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
