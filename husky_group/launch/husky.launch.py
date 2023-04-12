@@ -15,7 +15,7 @@ os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 #os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
 
-
+""" 
 def generate_launch_description():
 
     # Get LIDAR parameters
@@ -189,3 +189,4 @@ def generate_launch_description():
 
     return ld
 
+ """
