@@ -17,7 +17,7 @@ def generate_launch_description():
     ) 
 
     os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
-    os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
+    os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
     os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
 
