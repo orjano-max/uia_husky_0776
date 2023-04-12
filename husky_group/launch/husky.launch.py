@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 ARGUMENTS = [
-    DeclareLaunchArgument('urdf_extras', default_value='empty.urdf',
+    DeclareLaunchArgument('urdf_extras', default_value=PathJoinSubstitution([FindPackageShare("husky_group"),"urdf","husky_urdf_extras.urdf"],),
                         description='Path to URDF extras file. In order to add stuff to the husky'),
 ]
 
