@@ -7,11 +7,11 @@ from launch.substitutions import PathJoinSubstitution, Command, FindExecutable
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-urdf_extras_path = PathJoinSubstitution(
+""" urdf_extras_path = PathJoinSubstitution(
             [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-) 
+)  """
 
-os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+#os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 #os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
 
