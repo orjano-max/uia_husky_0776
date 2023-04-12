@@ -53,7 +53,7 @@ def generate_launch_description():
             " ",
             "prefix:=''",
             " ",
-            "urdf_extras:=$(find husky_group)/urdf/husky_urdf_extras.urdf", 
+            "urdf_extras:='$(find husky_group)/urdf/husky_urdf_extras.urdf'", 
         ]
     )
     robot_description = {"robot_description": robot_description_content}
