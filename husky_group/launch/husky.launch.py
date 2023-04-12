@@ -9,8 +9,8 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 urdf_extras_path = PathJoinSubstitution(
-                [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-    )
+            [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
+) 
 
 os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
@@ -18,7 +18,6 @@ os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 
 
 def generate_launch_description():
-
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -101,7 +100,7 @@ def generate_launch_description():
         'config',
         'imu_filter.yaml'],
     )
-    
+
     node_imu_filter = Node(
         package='imu_filter_madgwick',
         executable='imu_filter_madgwick_node',
