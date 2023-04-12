@@ -1,20 +1,24 @@
+import os
 from symbol import parameters
 import math
-from launch import LaunchDescription
+from launch import LaunchDescription, LaunchContext
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration, Command, FindExecutable, EnvironmentVariable
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-ARGUMENTS = [
-    DeclareLaunchArgument('serial_port', default_value="/dev/ttyUSB1",
-                          description='Serial port to connect to the husky.'),
-]
+urdf_extras_path = PathJoinSubstitution(
+                [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
+    )
+
+os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
+#os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
+
 
 def generate_launch_description():
 
-    serial_port = LaunchConfiguration("serial_port")
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -23,15 +27,13 @@ def generate_launch_description():
         'ouster_lidar.yaml'],
     )
 
-    localization_params = PathJoinSubstitution(
+    config_husky_ekf = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
         'localization.yaml'],
     )
 
-    urdf_extras_path = PathJoinSubstitution(
-                [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-    )
+    
 
     config_husky_velocity_controller = PathJoinSubstitution(
         [FindPackageShare("husky_group"),
@@ -39,17 +41,93 @@ def generate_launch_description():
         "control.yaml"],
     )
     
-    # Launch the husky robot using the husky_uia uia_master_husky repo
-    launch_husky_base = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(PathJoinSubstitution(
-        [FindPackageShare("husky_base"), 'launch', 'base_launch.py'])),
-        launch_arguments ={
-            "urdf_extras" : urdf_extras_path,
-            "localization_params" : localization_params,
-            "config_husky_velocity_controller" : config_husky_velocity_controller,
-            "serial_port" : serial_port,
-        }.items()
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare("husky_description"), "urdf", "husky.urdf.xacro"]
+            ),
+            " ",
+            "name:=husky",
+            " ",
+            "prefix:=''",
+            " ",
+        ]
     )
+    robot_description = {"robot_description": robot_description_content}
+
+    node_robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[robot_description],
+    )
+
+    node_controller_manager = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_description, config_husky_velocity_controller],
+        output={
+            "stdout": "screen",
+            "stderr": "screen",
+        },
+    )
+
+    spawn_controller = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["joint_state_broadcaster"],
+        output="screen",
+    )
+
+    spawn_husky_velocity_controller = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["husky_velocity_controller"],
+        output="screen",
+    )
+    
+    node_ekf = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_node',
+        output='screen',
+        parameters=[config_husky_ekf],
+        )
+
+    config_imu_filter = PathJoinSubstitution(
+        [FindPackageShare('husky_control'),
+        'config',
+        'imu_filter.yaml'],
+    )
+    
+    node_imu_filter = Node(
+        package='imu_filter_madgwick',
+        executable='imu_filter_madgwick_node',
+        name='imu_filter',
+        output='screen',
+        parameters=[config_imu_filter]
+    )
+        
+
+    # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
+    # the robot but does not include the joystick. Also, has a twist mux.
+    launch_husky_teleop_base = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'teleop_base.launch.py'])))
+
+    # Launch husky_control/teleop_joy.launch.py which is tele-operation using a physical joystick.
+    launch_husky_teleop_joy = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'teleop_joy.launch.py'])))
+
+
+    # Launch husky_bringup/accessories.launch.py which is the sensors commonly used on the Husky.
+    launch_husky_accessories = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py'])))
+
 
 
     #Launch the UM7 IMU
@@ -93,15 +171,23 @@ def generate_launch_description():
     )
 
 
-    ld = LaunchDescription(ARGUMENTS)
+    ld = LaunchDescription()
 
     # Launch pointcloud to laserscan, imu and lidar
     ld.add_action(node_pointcloud_to_laserscan)
     ld.add_action(node_um7_imu)
     ld.add_action(launch_ouster_lidar)
-
+    
     # Launch Husky UGV
-    ld.add_action(launch_husky_base)
+    ld.add_action(node_robot_state_publisher)
+    ld.add_action(node_controller_manager)
+    ld.add_action(spawn_controller)
+    ld.add_action(spawn_husky_velocity_controller)
+    ld.add_action(node_ekf)
+    ld.add_action(node_imu_filter)
+    ld.add_action(launch_husky_teleop_base)
+    ld.add_action(launch_husky_teleop_joy)
+    ld.add_action(launch_husky_accessories)
 
     return ld
 
