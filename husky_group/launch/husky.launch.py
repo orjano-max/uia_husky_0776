@@ -7,20 +7,17 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-""" urdf_extras_path = PathJoinSubstitution(
+urdf_extras_path = PathJoinSubstitution(
             [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-)  """
+) 
 
-#os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 #os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
 
 
 def generate_launch_description():
 
-    """ urdf_extras_path = PathJoinSubstitution(
-        [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"] 
-    ) """   
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -66,7 +63,7 @@ def generate_launch_description():
         output="screen",
         parameters=[robot_description],
     ) 
-    """
+    
 
     node_controller_manager = Node(
         package="controller_manager",
@@ -98,9 +95,9 @@ def generate_launch_description():
         name='ekf_node',
         output='screen',
         parameters=[config_husky_ekf],
-        ) """
+        )
 
-    """ config_imu_filter = PathJoinSubstitution(
+    config_imu_filter = PathJoinSubstitution(
         [FindPackageShare('husky_control'),
         'config',
         'imu_filter.yaml'],
@@ -112,10 +109,10 @@ def generate_launch_description():
         name='imu_filter',
         output='screen',
         parameters=[config_imu_filter]
-    ) """
+    )
         
 
-    """ # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
+    # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
     # the robot but does not include the joystick. Also, has a twist mux.
     launch_husky_teleop_base = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
@@ -130,7 +127,7 @@ def generate_launch_description():
     # Launch husky_bringup/accessories.launch.py which is the sensors commonly used on the Husky.
     launch_husky_accessories = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
-        [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py']))) """
+        [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py'])))
 
 
 
@@ -184,7 +181,7 @@ def generate_launch_description():
     
     # Launch Husky UGV
     ld.add_action(node_robot_state_publisher) 
-    """
+    
     ld.add_action(node_controller_manager)
     ld.add_action(spawn_controller)
     ld.add_action(spawn_husky_velocity_controller)
@@ -192,7 +189,7 @@ def generate_launch_description():
     ld.add_action(node_imu_filter)
     ld.add_action(launch_husky_teleop_base)
     ld.add_action(launch_husky_teleop_joy)
-    ld.add_action(launch_husky_accessories) """
+    ld.add_action(launch_husky_accessories)
 
     return ld
 
