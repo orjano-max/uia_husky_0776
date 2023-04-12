@@ -13,7 +13,7 @@ urdf_extras_path = PathJoinSubstitution(
 
 os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
-#os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
+os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
 
 def generate_launch_description():
