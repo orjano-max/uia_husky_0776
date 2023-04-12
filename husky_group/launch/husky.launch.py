@@ -53,8 +53,6 @@ def generate_launch_description():
             " ",
             "name:=husky",
             " ",
-            "prefix:=''",
-            " ",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
