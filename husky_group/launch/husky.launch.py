@@ -16,14 +16,14 @@ def generate_launch_description():
             [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
     )
 
-    print(urdf_extras_path)
+    print("URDF PATH: ",urdf_extras_path)
 
     os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
     os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
 
-    # Get LIDAR parameters
+    # Get LIDAR parameters 
     lidar_params = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
