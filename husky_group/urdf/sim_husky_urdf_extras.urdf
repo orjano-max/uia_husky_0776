@@ -5,7 +5,7 @@
   This file is passed when launching the husky and addons described here will be added to the husky
     -->
 
-  <!-- Sensor frame link -->
+   <!-- Sensor frame link -->
   <link
     name="frame_link">
     <inertial>
@@ -42,7 +42,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="pfile://$(find husky_group)/rame_link.STL" />
+          filename="file://$(find husky_group)/meshes/frame_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -53,7 +53,7 @@
     <origin xyz="-0.01 0 0.01" rpy="0 0 0"/>
   </joint>
 
-   <!-- OUSTER LIDAR LINK. ØØ. 19.09.22 -->
+  <!-- OUSTER LIDAR LINK. ØØ. 19.09.22 -->
   <link name="lidar_link">
     <visual>
       <origin
@@ -73,7 +73,7 @@
   <joint name="lidar_joint" type="fixed">
     <parent link="user_rail_link"/>
     <child link="lidar_link"/>
-    <origin xyz="-0.0635 0 0.610" rpy="0 0 0"/>
+    <origin xyz="-0.0635 0 0.610" rpy="0 0 3.14159"/>
   </joint>
 
   <gazebo reference="lidar_link">
@@ -92,7 +92,7 @@
         </scan>
         <range>
           <min>0.8</min>
-          <max>120</max>
+          <max>30</max>
           <resolution>0.015000</resolution>
         </range>
         <noise>

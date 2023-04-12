@@ -53,7 +53,7 @@
     <origin xyz="-0.01 0 0.01" rpy="0 0 0"/>
   </joint>
 
-   <!-- OUSTER LIDAR LINK. ØØ. 19.09.22 -->
+  <!-- OUSTER LIDAR LINK. ØØ. 19.09.22 -->
   <link name="lidar_link">
     <visual>
       <origin

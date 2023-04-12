@@ -1,36 +1,39 @@
-import os
-from symbol import parameters
-import math
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable, RegisterEventHandler, ExecuteProcess, DeclareLaunchArgument
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, EnvironmentVariable
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler, SetEnvironmentVariable
 from launch.event_handlers import OnProcessExit
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command, EnvironmentVariable, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 from ament_index_python.packages import get_package_share_directory
+
 from pathlib import Path
 
 ARGUMENTS = [
     DeclareLaunchArgument('world_path', default_value='',
                           description='The world path, by default is empty.world'),
+    DeclareLaunchArgument('urdf_extras', default_value=PathJoinSubstitution([FindPackageShare("husky_group"),"urdf","husky_urdf_extras.urdf"],),
+                          description='Path to URDF extras file. In order to add stuff to the husky'),
 ]
 
-os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
 
 def generate_launch_description():
-    
-    urdf_extras_path = PathJoinSubstitution(
-                [FindPackageShare("husky_group"), "urdf", "sim_husky_urdf_extras.urdf"]
-                )
+
+    gz_resource_path = SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[
+                                                EnvironmentVariable('GAZEBO_MODEL_PATH',
+                                                                    default_value=''),
+                                                '/usr/share/gazebo-11/models/:',
+                                                str(Path(get_package_share_directory('husky_description')).
+                                                    parent.resolve())])
+
 
     # Launch args
     world_path = LaunchConfiguration('world_path')
-    prefix = LaunchConfiguration('prefix')
+    urdf_extras_path = LaunchConfiguration("urdf_extras")
 
     config_husky_velocity_controller = PathJoinSubstitution(
-        [FindPackageShare("husky_group"), "params", "sim_control.yaml"]
+        [FindPackageShare("husky_control"), "config", "control.yaml"]
     )
 
     # Get URDF via xacro
@@ -48,16 +51,17 @@ def generate_launch_description():
             " ",
             "is_sim:=true",
             " ",
-            "urdf_extras:=", urdf_extras_path,
+            "gazebo_controllers:=",
+            config_husky_velocity_controller,
             " ",
-            "gazebo_controllers:=", config_husky_velocity_controller,
+            "urdf_extras:=",urdf_extras_path
         ]
     )
     robot_description = {"robot_description": robot_description_content}
 
     spawn_husky_velocity_controller = Node(
         package='controller_manager',
-        executable='spawner',
+        executable='spawner.py',
         arguments=['husky_velocity_controller', '-c', '/controller_manager'],
         output='screen',
     )
@@ -71,7 +75,7 @@ def generate_launch_description():
 
     spawn_joint_state_broadcaster = Node(
         package='controller_manager',
-        executable='spawner',
+        executable='spawner.py',
         arguments=['joint_state_broadcaster', '-c', '/controller_manager'],
         output='screen',
     )
@@ -111,17 +115,26 @@ def generate_launch_description():
         output='screen',
     )
 
+    # Launch husky_control/control.launch.py which is just robot_localization.
+    launch_husky_control = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'control.launch.py'])))
 
-    
+    # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
+    # the robot but does not include the joystick. Also, has a twist mux.
+    launch_husky_teleop_base = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'teleop_base.launch.py'])))
 
-    ld = LaunchDescription(ARGUMENTS)    
-
-    # Launch husky
+    ld = LaunchDescription(ARGUMENTS)
+    ld.add_action(gz_resource_path)
     ld.add_action(node_robot_state_publisher)
     ld.add_action(spawn_joint_state_broadcaster)
     ld.add_action(diffdrive_controller_spawn_callback)
     ld.add_action(gzserver)
     ld.add_action(gzclient)
     ld.add_action(spawn_robot)
-    
+    ld.add_action(launch_husky_control)
+    ld.add_action(launch_husky_teleop_base)
+
     return ld
