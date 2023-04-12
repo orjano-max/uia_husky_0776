@@ -18,9 +18,6 @@ os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 
 def generate_launch_description():
 
-    urdf_extras_path = PathJoinSubstitution(
-        [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-    )
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -29,7 +26,7 @@ def generate_launch_description():
         'ouster_lidar.yaml'],
     )
 
-    config_husky_ekf = PathJoinSubstitution(
+    """ config_husky_ekf = PathJoinSubstitution(
         [FindPackageShare('husky_group'),
         'params',
         'localization.yaml'],
@@ -129,7 +126,7 @@ def generate_launch_description():
     launch_husky_accessories = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
         [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py'])))
-
+ """
 
 
     #Launch the UM7 IMU
@@ -180,7 +177,7 @@ def generate_launch_description():
     ld.add_action(node_um7_imu)
     ld.add_action(launch_ouster_lidar)
     
-    # Launch Husky UGV
+    """ # Launch Husky UGV
     ld.add_action(node_robot_state_publisher)
     ld.add_action(node_controller_manager)
     ld.add_action(spawn_controller)
@@ -189,7 +186,7 @@ def generate_launch_description():
     ld.add_action(node_imu_filter)
     ld.add_action(launch_husky_teleop_base)
     ld.add_action(launch_husky_teleop_joy)
-    ld.add_action(launch_husky_accessories)
+    ld.add_action(launch_husky_accessories) """
 
     return ld
 
