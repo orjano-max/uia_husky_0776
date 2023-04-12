@@ -1,21 +1,20 @@
 import os
 import math
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-
+ARGUMENTS = [
+    DeclareLaunchArgument('urdf_extras', default_value='empty.urdf',
+                        description='Path to URDF extras file. In order to add stuff to the husky'),
+]
 
 def generate_launch_description():
 
-    urdf_extras_path = PathJoinSubstitution(
-        [FindPackageShare('husky_group'),
-        'urdf',
-        'husky_urdf_extras.urdf'],
-    )
+    urdf_extras_path = LaunchConfiguration("urdf_extras")
 
     os.environ["CPR_URDF_EXTRAS"] = urdf_extras_path
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
