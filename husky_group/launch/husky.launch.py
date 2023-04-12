@@ -15,8 +15,12 @@ from launch_ros.substitutions import FindPackageShare
 os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
 #os.environ["HUSKY_SERIAL_PORT"] = "/dev/prolific"
 
-""" 
+
 def generate_launch_description():
+
+    urdf_extras_path = PathJoinSubstitution(
+        [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
+    )
 
     # Get LIDAR parameters
     lidar_params = PathJoinSubstitution(
@@ -189,4 +193,3 @@ def generate_launch_description():
 
     return ld
 
- """
