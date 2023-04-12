@@ -43,6 +43,7 @@ def generate_launch_description():
         "control.yaml"],
     )
     
+    # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
