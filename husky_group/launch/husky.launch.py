@@ -56,7 +56,6 @@ def generate_launch_description():
             "prefix:=''",
             " ",
             "urdf_extras:=",urdf_extras_path,
-            " ",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
