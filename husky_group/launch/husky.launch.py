@@ -16,7 +16,7 @@ def generate_launch_description():
             [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
     )
 
-    print("URDF PATH: ",urdf_extras_path)
+    print("URDF PATH: ",urdf_extras_path.__getattribute__)
 
     #os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "false"
