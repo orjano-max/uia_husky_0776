@@ -1,10 +1,9 @@
 import os
-from symbol import parameters
 import math
-from launch import LaunchDescription, LaunchContext
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration, Command, FindExecutable, EnvironmentVariable
+from launch.substitutions import PathJoinSubstitution, Command, FindExecutable
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
