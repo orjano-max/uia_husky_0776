@@ -7,16 +7,18 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-urdf_extras_path = PathJoinSubstitution(
-            [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
-) 
 
-os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
-os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
-os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
 
 def generate_launch_description():
+
+    urdf_extras_path = PathJoinSubstitution(
+            [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
+    ) 
+
+    os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+    os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
+    os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
 
     # Get LIDAR parameters
