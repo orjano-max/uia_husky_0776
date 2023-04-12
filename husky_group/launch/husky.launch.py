@@ -59,7 +59,7 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    node_robot_state_publisher = Node(
+    """ node_robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
@@ -96,7 +96,7 @@ def generate_launch_description():
         name='ekf_node',
         output='screen',
         parameters=[config_husky_ekf],
-        )
+        ) """
 
     """ config_imu_filter = PathJoinSubstitution(
         [FindPackageShare('husky_control'),
@@ -113,7 +113,7 @@ def generate_launch_description():
     ) """
         
 
-    # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
+    """ # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
     # the robot but does not include the joystick. Also, has a twist mux.
     launch_husky_teleop_base = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
@@ -128,7 +128,7 @@ def generate_launch_description():
     # Launch husky_bringup/accessories.launch.py which is the sensors commonly used on the Husky.
     launch_husky_accessories = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
-        [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py'])))
+        [FindPackageShare("husky_bringup"), 'launch', 'accessories.launch.py']))) """
 
 
 
@@ -180,16 +180,16 @@ def generate_launch_description():
     ld.add_action(node_um7_imu)
     ld.add_action(launch_ouster_lidar)
     
-    # Launch Husky UGV
+    """ # Launch Husky UGV
     ld.add_action(node_robot_state_publisher)
     ld.add_action(node_controller_manager)
     ld.add_action(spawn_controller)
     ld.add_action(spawn_husky_velocity_controller)
     ld.add_action(node_ekf)
-    """ ld.add_action(node_imu_filter) """
+    ld.add_action(node_imu_filter)
     ld.add_action(launch_husky_teleop_base)
     ld.add_action(launch_husky_teleop_joy)
-    ld.add_action(launch_husky_accessories)
+    ld.add_action(launch_husky_accessories) """
 
     return ld
 
