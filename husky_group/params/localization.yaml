@@ -28,3 +28,13 @@ ekf_node:
     imu0_differential: true
     imu0_queue_size: 10
     imu0_remove_gravitational_acceleration: true
+
+    imu1: imu
+    imu1_config: [false, false, false,
+                  true, true, true,
+                  false, false, false,
+                  true, true, true,
+                  false, false, false]
+    imu1_differential: true
+    imu1_queue_size: 10
+    imu1_remove_gravitational_acceleration: true
