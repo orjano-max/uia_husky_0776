@@ -9,7 +9,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 
-
 def generate_launch_description():
 
     urdf_extras_path = PathJoinSubstitution(
@@ -57,7 +56,8 @@ def generate_launch_description():
             " ",
             "prefix:=''",
             " ",
-            "urdf_extras:=$(find husky_group)/urdf/husky_urdf_extras.urdf", 
+            "urdf_extras:=",urdf_extras_path,
+            " ",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
