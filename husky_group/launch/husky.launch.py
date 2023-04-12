@@ -98,7 +98,7 @@ def generate_launch_description():
         parameters=[config_husky_ekf],
         )
 
-    config_imu_filter = PathJoinSubstitution(
+    """ config_imu_filter = PathJoinSubstitution(
         [FindPackageShare('husky_control'),
         'config',
         'imu_filter.yaml'],
@@ -110,7 +110,7 @@ def generate_launch_description():
         name='imu_filter',
         output='screen',
         parameters=[config_imu_filter]
-    )
+    ) """
         
 
     # Launch husky_control/teleop_base.launch.py which is various ways to tele-op
@@ -186,7 +186,7 @@ def generate_launch_description():
     ld.add_action(spawn_controller)
     ld.add_action(spawn_husky_velocity_controller)
     ld.add_action(node_ekf)
-    ld.add_action(node_imu_filter)
+    #ld.add_action(node_imu_filter)
     ld.add_action(launch_husky_teleop_base)
     ld.add_action(launch_husky_teleop_joy)
     ld.add_action(launch_husky_accessories)
