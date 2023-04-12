@@ -16,7 +16,7 @@ def generate_launch_description():
             [FindPackageShare("husky_group"), "urdf", "husky_urdf_extras.urdf"]
     ) 
 
-    os.environ["CPR_URDF_EXTRAS"] = str(urdf_extras_path)
+    os.environ["CPR_URDF_EXTRAS"] = urdf_extras_path
     os.environ["HUSKY_TOP_PLATE_ENABLED"] = "true"
     os.environ["HUSKY_SERIAL_PORT"] = "/dev/ttyUSB1"
 
@@ -183,7 +183,6 @@ def generate_launch_description():
     
     # Launch Husky UGV
     ld.add_action(node_robot_state_publisher) 
-    
     ld.add_action(node_controller_manager)
     ld.add_action(spawn_controller)
     ld.add_action(spawn_husky_velocity_controller)
