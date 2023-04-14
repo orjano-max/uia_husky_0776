@@ -8,7 +8,6 @@ ouster_driver:
     sensor_frame: lidar_link
     laser_frame: base_laser
     imu_frame: imu_data_frame
-    use_sim_time: False
 
     # if False, data are published with sensor data QoS. This is preferrable
     # for production but default QoS is needed for rosbag.
@@ -50,4 +49,4 @@ ouster_driver:
     # IMG|PCL|IMU|SCAN
     # PCL
     #
-    proc_mask: IMG|PCL|IMU
+    os1_proc_mask: IMG|PCL|IMU
