@@ -159,7 +159,7 @@ def generate_launch_description():
         parameters=[{
         'target_frame': 'base_laser',
         'transform_tolerance': 0.01,
-        'min_height': -0.50,
+        'min_height': -0.95,
         'max_height': 0.2,
         'angle_min': -math.pi,  # -M_PI/2
         'angle_max': math.pi,  # M_PI/2
