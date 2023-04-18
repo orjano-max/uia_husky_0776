@@ -3,6 +3,10 @@
 This is the git repository for the Husky A200 with serial number 0776. The repository works for other husky UGVs too, but it adds attatchments to the UGV that are specific for this Husky
 Launching the husky with these packages will bring up the husky, with the frame addon and lidar running. The lidar will publish point cloud and the pointcloud to laserscan will take care of the conversion from pointcloud to laserscan. The packages UM7 and serial is needed for the IMU, the rest is husky.
 
+## Documentation
+Some documentation has been made as a part of a project on the setup of this particulat Husky. The information might be somewhat outdated in certain aspects, but it could useful information regarding how to do setup and how to launch slam, NAV 2 etc.
+It can be found here: https://mas514-husky_group.gitlab.io/mas-514-husky/index.html
+
 ## Installation
 Open terminal
 
