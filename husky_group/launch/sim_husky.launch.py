@@ -24,6 +24,7 @@ def generate_launch_description():
     urdf_extras_path = PathJoinSubstitution(
                 [FindPackageShare("husky_group"), "urdf", "sim_husky_urdf_extras.urdf"]
                 )
+    
 
     # Launch args
     world_path = LaunchConfiguration('world_path')
@@ -111,8 +112,18 @@ def generate_launch_description():
         output='screen',
     )
 
+    #Launch husky_teleop_base
+    launch_husky_teleop_base = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'teleop_base_launch.py'])),
+    )
 
-    
+    #Launch husky_teleop_joy
+    launch_husky_teleop_joy = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution(
+        [FindPackageShare("husky_control"), 'launch', 'teleop_joy_launch.py'])),
+    )
+
 
     ld = LaunchDescription(ARGUMENTS)    
 
@@ -123,5 +134,7 @@ def generate_launch_description():
     ld.add_action(gzserver)
     ld.add_action(gzclient)
     ld.add_action(spawn_robot)
+    ld.add_action(launch_husky_teleop_base)
+    ld.add_action(launch_husky_teleop_joy)
     
     return ld

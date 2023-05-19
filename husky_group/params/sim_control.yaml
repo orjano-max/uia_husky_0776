@@ -1,5 +1,6 @@
 controller_manager:
   ros__parameters:
+    use_sim_time: true # For simulation
     update_rate: 10  # Hz
 
     joint_state_broadcaster:
@@ -10,6 +11,7 @@ controller_manager:
 
 husky_velocity_controller:
   ros__parameters:
+    use_sim_time: true # For Simulation
     left_wheel_names: [ "front_left_wheel_joint", "rear_left_wheel_joint" ]
     right_wheel_names: [ "front_right_wheel_joint", "rear_right_wheel_joint" ]
 
@@ -28,7 +30,7 @@ husky_velocity_controller:
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
     open_loop: false
-    enable_odom_tf: true
+    enable_odom_tf: true # true for simulation
 
     cmd_vel_timeout: 0.5
     #publish_limited_velocity: true
