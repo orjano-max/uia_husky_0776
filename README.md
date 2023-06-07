@@ -33,9 +33,9 @@ cd uia_husky_0776
 rosdep install --ignore-src --rosdistro foxy -y
 ~~~
 
-Build the pacakges
+Build the pacakges from the workspace directory
 ~~~bash
-colocn build
+colcon build
 ~~~
 
 
